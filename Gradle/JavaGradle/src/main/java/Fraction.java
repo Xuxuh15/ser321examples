@@ -45,11 +45,11 @@ public class Fraction {
 
 
          if(args.length == 1){ //only one parameter provided
-            frac.setNumerator(args[1]);
+            frac.setNumerator(Integer.parseInt(args[1]));
          }
          else if(args.length == 2){ //two parameters provided
-            frac.setNumerator(args[1]);
-            frac.setDenominator(args[2]);
+            frac.setNumerator(Integer.parseInt(args[1]));
+            frac.setDenominator(Integer.parseInt(args[2]));
          }
          else{ //default case
              // set the values
