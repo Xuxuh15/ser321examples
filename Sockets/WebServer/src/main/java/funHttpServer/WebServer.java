@@ -200,19 +200,44 @@ class WebServer {
           Map<String, String> query_pairs = new LinkedHashMap<String, String>();
           // extract path parameters
           query_pairs = splitQuery(request.replace("multiply?", ""));
-
-          // extract required fields from parameters
-          Integer num1 = Integer.parseInt(query_pairs.get("num1"));
-          Integer num2 = Integer.parseInt(query_pairs.get("num2"));
-
-          // do math
-          Integer result = num1 * num2;
-
-          // Generate response
-          builder.append("HTTP/1.1 200 OK\n");
-          builder.append("Content-Type: text/html; charset=utf-8\n");
-          builder.append("\n");
-          builder.append("Result is: " + result);
+          try{
+               // extract required fields from parameters
+               Integer num1 = Integer.parseInt(query_pairs.get("num1"));
+               Integer num2 = Integer.parseInt(query_pairs.get("num2"));
+               Integer result = num1 * num2; 
+               String responseCode = "HTTP/1.1 200 OK\n"; 
+               String clientMessage = "Result successfully calculated"; 
+            
+              
+          }
+           catch(NumberFormatException e){
+               e.printStackTrace(); 
+              responseCode = "HTTP/1.1 400 Bad Request\n"; 
+              clientMessage = "You must provide a number as a query parameter"; 
+              result = -1; 
+           }
+           catch(NullPointerException){
+               e.printStackTrace(); 
+              responseCode = "HTTP/1.1 400 Bad Request\n";
+              clientMessage = "You must provide two query params: num1 and num2"; 
+              result = -1; 
+              
+           }
+            catch(UnsupportedEncodingException e){
+              e.printStackTrace(); 
+              responseCode = "HTTP/1.1 400 Bad Request\n"; 
+              clientMessage = "Unsupported Encoding"; 
+               result = -1; 
+            }
+           finally{
+               // Generate response
+               builder.append(responseCode);
+               builder.append("Content-Type: text/html; charset=utf-8\n");
+               builder.append("\n");
+               builder.append(clientMessage); 
+               builder.append("Result is: " + result);
+           }
+        
 
           // TODO: Include error handling here with a correct error code and
           // a response that makes sense
